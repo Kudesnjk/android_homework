@@ -11,7 +11,6 @@ class MainActivity : AppCompatActivity() {
         if (supportFragmentManager.findFragmentById(R.id.fragment_wrapper) == null) {
             val fm = supportFragmentManager.beginTransaction()
             fm.add(R.id.fragment_wrapper, NumberList())
-            fm.addToBackStack(null)
             fm.commit()
         }
     }
