@@ -2,7 +2,6 @@ package com.example.homework
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +9,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 private const val SINGLE_NUMBER = "single_number"
+private const val NUMBER_ARG = "number_arg"
 
 class SingleNumber() : Fragment() {
 
-    private var number: Int = -1
+    private var number: Int? = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        number = arguments?.getInt(NUMBER_ARG)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +26,7 @@ class SingleNumber() : Fragment() {
         val textView = view.findViewById<TextView>(R.id.single_number_text_view)
         restoreState(savedInstanceState)
         textView.text = number.toString()
-        if (number % 2 == 0) {
+        if (number?.rem(2) == 0) {
             textView.setTextColor(Color.RED)
         } else {
             textView.setTextColor(Color.BLUE)
@@ -34,7 +35,7 @@ class SingleNumber() : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(SINGLE_NUMBER, number)
+        number?.let { outState.putInt(SINGLE_NUMBER, it) }
         super.onSaveInstanceState(outState)
     }
 
@@ -46,9 +47,11 @@ class SingleNumber() : Fragment() {
 
     companion object {
         fun getInstance(number: Int): SingleNumber {
-            val sn = SingleNumber()
-            sn.number = number
-            return sn
+            return SingleNumber().apply {
+                arguments = Bundle().apply {
+                    putInt(NUMBER_ARG, number)
+                }
+            }
         }
     }
 }

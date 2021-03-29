@@ -5,7 +5,11 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class NumberViewHolder(itemView: View, private val listener: View.OnClickListener) :
+interface NumberClickListener {
+    fun onNumberClick(number: Int)
+}
+
+class NumberViewHolder(itemView: View, private val listener: NumberClickListener) :
         RecyclerView.ViewHolder(itemView) {
     private val number : TextView = itemView.findViewById(R.id.number_text_view)
 
@@ -18,6 +22,8 @@ class NumberViewHolder(itemView: View, private val listener: View.OnClickListene
             number.setTextColor(Color.BLUE)
         }
 
-        number.setOnClickListener(listener)
+        number.setOnClickListener {
+            listener.onNumberClick(num)
+        }
     }
 }

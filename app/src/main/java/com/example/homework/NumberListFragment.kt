@@ -2,13 +2,11 @@ package com.example.homework
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -18,8 +16,8 @@ private const val LANDSCAPE_COLUMNS_COUNT = 4
 private const val ITEMS_CACHE_SIZE = 10
 private const val DEFAULT_ITEMS_COUNT = 100
 
-class NumberList() : Fragment(), View.OnClickListener {
-    var itemsCount = DEFAULT_ITEMS_COUNT
+class NumberList() : Fragment(), NumberClickListener {
+    private var itemsCount = DEFAULT_ITEMS_COUNT
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,10 +60,9 @@ class NumberList() : Fragment(), View.OnClickListener {
         }
     }
 
-    override fun onClick(v: View?) {
-        val text = (v as TextView).text
+    override fun onNumberClick(number: Int) {
         val fm = activity?.supportFragmentManager?.beginTransaction() ?: return
-        fm.replace(R.id.fragment_wrapper, SingleNumber.getInstance(text.toString().toInt()))
+        fm.replace(R.id.fragment_wrapper, SingleNumber.getInstance(number))
         fm.addToBackStack(null)
         fm.commit()
     }
