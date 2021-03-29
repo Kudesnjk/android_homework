@@ -2,6 +2,7 @@ package com.example.homework
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -51,8 +52,8 @@ class NumberList() : Fragment(), View.OnClickListener {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
         outState.putInt(ELEMENTS_NUMBER, itemsCount)
+        super.onSaveInstanceState(outState)
     }
 
     private fun restoreState(savedInstanceState: Bundle?) {
