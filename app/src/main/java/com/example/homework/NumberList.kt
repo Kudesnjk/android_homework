@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -16,7 +17,7 @@ private const val LANDSCAPE_COLUMNS_COUNT = 4
 private const val ITEMS_CACHE_SIZE = 10
 private const val DEFAULT_ITEMS_COUNT = 100
 
-class NumberList : Fragment() {
+class NumberList() : Fragment(), View.OnClickListener {
     var itemsCount = DEFAULT_ITEMS_COUNT
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class NumberList : Fragment() {
 
         restoreState(savedInstanceState)
         val dataSource = DataSource(itemsCount)
-        val numberAdapter = NumberAdapter(dataSource)
+        val numberAdapter = NumberAdapter(dataSource, this)
         val addNumButton = view.findViewById<Button>(R.id.add_num_button)
         addNumButton.setOnClickListener {
             numberAdapter.notifyItemInserted(dataSource.addElem())
@@ -58,5 +59,13 @@ class NumberList : Fragment() {
         if (savedInstanceState != null) {
             itemsCount = savedInstanceState.getInt(ELEMENTS_NUMBER)
         }
+    }
+
+    override fun onClick(v: View?) {
+        val text = (v as TextView).text
+        val fm = activity?.supportFragmentManager?.beginTransaction() ?: return
+        fm.replace(R.id.fragment_wrapper, SingleNumber.getInstance(text.toString().toInt()))
+        fm.addToBackStack(null)
+        fm.commit()
     }
 }
